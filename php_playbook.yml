@@ -1,0 +1,23 @@
+---
+- hosts: webserver
+
+  collections:
+    - geerlingguy.php_roles
+
+  roles:
+    - role: geerlingguy.repo-epel
+      when: ansible_os_family == 'RedHat'
+    - role: geerlingguy.repo-remi
+      when: ansible_os_family == 'RedHat'
+    - role: geerlingguy.php_roles.php_versions
+      vars:
+        php_version: "7.4"
+    - role: geerlingguy.php_roles.php
+      vars:
+        php_enable_webserver: true
+        php_webserver_daemon: "nginx"
+        php_enable_php_fpm: false
+        php_fpm_handler_state: restarted
+    - role: geerlingguy.php_roles.php_mysql
+      vars:
+        php_enablerepo: "remi,epel"
