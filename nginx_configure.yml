@@ -358,7 +358,7 @@
                     once: "off"
                   http_demo_conf: false
 
-        nginx_config_html_demo_template_enable: true
+        nginx_config_html_demo_template_enable: false
         nginx_config_html_demo_template:
           frontend:
             template_file: www/index.html.j2
