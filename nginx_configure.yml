@@ -57,7 +57,7 @@
             - accept_mutex off;
           stream_enable: true
 
-        nginx_config_status_enable: true
+        nginx_config_status_enable: false
         nginx_config_status_port: 8080
         nginx_config_status_access_log:
           location: /var/log/nginx/access.log
@@ -115,7 +115,7 @@
                 reverse_proxy:
                   locations:
                     frontend:
-                      location: /
+                      location: /static
                       proxy_hide_headers:
                         - X-Powered-By
                       add_headers:
@@ -167,7 +167,8 @@
                         last_modified: "off"
                         once: "on"
                     backend:
-                      location: /backend
+                      #location: /backend
+                      location: /
                       proxy_pass: http://backend_servers/
                       proxy_cache: backend_proxy_cache
                       proxy_cache_valid:
@@ -256,14 +257,6 @@
                     port: 8082
                     weight: 1
                     health_check: max_fails=3 fail_timeout=5s
-                  backend_server_2:
-                    address: unix:/var/run/control.unit.sock
-                    weight: 1
-                    health_check: max_fails=3 fail_timeout=5s
-                  backend_server_3:
-                    address: 0.0.0.0
-                    port: 8083
-                    down: true
           frontend:
             template_file: http/default.conf.j2
             conf_file_name: frontend_default.conf
@@ -349,7 +342,7 @@
                       autoindex: false
                       custom_options:
                         - fastcgi_split_path_info ^(.+\.php)(/.+)$;
-                        - fastcgi_pass unix:/run/php-fpm/www.sock;
+                        - fastcgi_pass php-fpm;
                         - fastcgi_index index.php;
                         - include fastcgi_params;
                         - fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
