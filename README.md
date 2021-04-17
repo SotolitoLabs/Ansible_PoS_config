@@ -59,8 +59,16 @@ ansible-playbook \
 mysql -u root -h 127.0.0.1 -P 3306
 ```
 
+# Paquetes adicionales requeridos
+
+dnf install -y php-json
+dnf install -y strace
+dnf search php | grep zip
+dnf install -y php72-libzip
+dnf search pecl | grep zip
+dnf install -y php-pecl-zip
 
 
+# Ejecutar el build del contenedor
 
-
-
+podman build --rm --no-cache -t sotolito/pos .
